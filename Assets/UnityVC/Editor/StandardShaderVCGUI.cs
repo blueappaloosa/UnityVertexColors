@@ -89,7 +89,6 @@ namespace UnityEditor
     MaterialProperty vertexColor = null;
     MaterialEditor m_MaterialEditor;
     WorkflowMode m_WorkflowMode = WorkflowMode.Specular;
-    ColorPickerHDRConfig m_ColorPickerHDRConfig = new ColorPickerHDRConfig(0f, 99f, 1 / 99f, 3f);
 
     bool m_FirstTimeApply = true;
 
@@ -281,7 +280,7 @@ namespace UnityEditor
         bool hadEmissionTexture = emissionMap.textureValue != null;
 
         // Texture and HDR color controls
-        m_MaterialEditor.TexturePropertyWithHDRColor(Styles.emissionText, emissionMap, emissionColorForRendering, m_ColorPickerHDRConfig, false);
+        m_MaterialEditor.TexturePropertyWithHDRColor(Styles.emissionText, emissionMap, emissionColorForRendering, false);
 
         // If texture was assigned and color was black set color to white
         float brightness = emissionColorForRendering.colorValue.maxColorComponent;
