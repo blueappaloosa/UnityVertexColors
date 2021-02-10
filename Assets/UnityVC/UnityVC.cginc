@@ -1,6 +1,7 @@
-﻿/*
-Unity Standard Vertex Color Shader for Unity 2017.1.1f1
+/*
+Unity Standard Vertex Color Shader for Unity 2020
 (original by defaxer)
+Updated by BlueAppaloosa
 */
 
 #ifndef UNITY_VC_INCLUDED
@@ -68,8 +69,8 @@ struct VertexOutputForwardBase_VC
 {
 	float4 pos							: SV_POSITION;
 	float4 tex							: TEXCOORD0;
-	half3 eyeVec 						: TEXCOORD1;
-	half4 tangentToWorldAndPackedData[3]	: TEXCOORD2;	// [3x3:tangentToWorld | 1x3:viewDirForParallax]
+	float4 eyeVec 						: TEXCOORD1;
+	float4 tangentToWorldAndPackedData[3]	: TEXCOORD2;	// [3x3:tangentToWorld | 1x3:viewDirForParallax]
 	half4 ambientOrLightmapUV			: TEXCOORD5;	// SH or Lightmap UV
 	SHADOW_COORDS(6)
 	UNITY_FOG_COORDS(7)
@@ -108,7 +109,7 @@ VertexOutputForwardBase_VC vertForwardBase_VC(VertexInput_VC v)
 	o.pos = UnityObjectToClipPos(v.vertex);
 
 	o.tex = TexCoords_VC(v);
-	o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
+	o.eyeVec.xyz = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
 	float3 normalWorld = UnityObjectToWorldNormal(v.normal);
 #ifdef _TANGENT_TO_WORLD
 	float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
@@ -186,8 +187,8 @@ struct VertexOutputForwardAdd_VC
 {
 	float4 pos							: SV_POSITION;
 	float4 tex							: TEXCOORD0;
-	half3 eyeVec 						: TEXCOORD1;
-	half4 tangentToWorldAndLightDir[3]	: TEXCOORD2;	// [3x3:tangentToWorld | 1x3:lightDir]
+	float4 eyeVec 						: TEXCOORD1;
+	float4 tangentToWorldAndLightDir[3]	: TEXCOORD2;	// [3x3:tangentToWorld | 1x3:lightDir]
 	LIGHTING_COORDS(5, 6)
 	UNITY_FOG_COORDS(7)
 
@@ -212,7 +213,7 @@ VertexOutputForwardAdd_VC vertForwardAdd_VC(VertexInput_VC v)
 	o.pos = UnityObjectToClipPos(v.vertex);
 
 	o.tex = TexCoords_VC(v);
-	o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
+	o.eyeVec.xyz = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
 	float3 normalWorld = UnityObjectToWorldNormal(v.normal);
 #ifdef _TANGENT_TO_WORLD
 	float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
@@ -269,8 +270,8 @@ struct VertexOutputDeferred_VC
 {
 	float4 pos							: SV_POSITION;
 	float4 tex							: TEXCOORD0;
-	half3 eyeVec 						: TEXCOORD1;
-	half4 tangentToWorldAndPackedData[3]	: TEXCOORD2;	// [3x3:tangentToWorld | 1x3:viewDirForParallax]
+	float4 eyeVec 						: TEXCOORD1;
+	float4 tangentToWorldAndPackedData[3]	: TEXCOORD2;	// [3x3:tangentToWorld | 1x3:viewDirForParallax]
 	half4 ambientOrLightmapUV			: TEXCOORD5;	// SH or Lightmap UVs			
 
 #if defined(_VERTEXCOLOR) || defined(_VERTEXCOLOR_LERP)
@@ -306,7 +307,7 @@ VertexOutputDeferred_VC vertDeferred_VC(VertexInput_VC v)
 	o.pos = UnityObjectToClipPos(v.vertex);
 
 	o.tex = TexCoords_VC(v);
-	o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
+	o.eyeVec.xyz = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
 	float3 normalWorld = UnityObjectToWorldNormal(v.normal);
 #ifdef _TANGENT_TO_WORLD
 	float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
